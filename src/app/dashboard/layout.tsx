@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import Header from "@/components/Header/Header";
 import MobileHeader from "@/components/Header/MobileHeader";
 import SideNav from "@/components/Navigation/SideNav";
@@ -21,8 +21,20 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang='en'>
-			<body className={`bg-gray-800 ${inter.className}`}>{children}</body>
-		</html>
+    <html lang="en">
+      <body className={`bg-white${inter.className}`}>
+        <div className="flex">
+          <SideNav />
+          <main className="flex-1">
+            <MarginWidthWrapper>
+              <Header />
+              <MobileHeader />
+              <PageWrapper>{children}</PageWrapper>
+              <FooterNav />
+            </MarginWidthWrapper>
+          </main>
+        </div>
+      </body>
+    </html>
 	);
 }
