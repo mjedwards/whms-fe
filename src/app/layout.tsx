@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header/Header";
-import MobileHeader from "@/components/Header/MobileHeader";
-import SideNav from "@/components/Navigation/SideNav";
-import MarginWidthWrapper from "@/components/Wrappers/MarginWidthWrapper";
-import PageWrapper from "@/components/Wrappers/PageWrapper";
-import FooterNav from "@/components/Navigation/FooterNav";
+import TanstackProvider from "@/providers/TanstackProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +17,9 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang='en'>
-			<body className={`bg-gray-800 ${inter.className}`}>{children}</body>
+			<body className={`bg-gray-800 ${inter.className}`}>
+				<TanstackProvider>{children}</TanstackProvider>
+			</body>
 		</html>
 	);
 }

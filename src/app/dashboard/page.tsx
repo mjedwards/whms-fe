@@ -9,6 +9,12 @@ const Dashboard = () => {
 			<div className='border-dashed border border-zinc-500 w-full h-64 rounded-lg'>
 				See if we can integrate Seo stuff.
 			</div>
+			<div className='border-dashed border border-zinc-500 w-full h-64 rounded-lg'>
+				See if we can integrate Seo stuff.
+			</div>
+			<div className='border-dashed border border-zinc-500 w-full h-64 rounded-lg'>
+				See if we can integrate Seo stuff.
+			</div>
 		</>
 	);
 };

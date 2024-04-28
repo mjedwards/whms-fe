@@ -2,6 +2,7 @@ import { Logo } from "@/components/Logo/Logo";
 import Link from "next/link";
 
 export default function Home() {
+	// axios.get(api, { headers: {"Authorization" : `Bearer ${token}`} })
 	return (
 		<>
 			<header className='absolute inset-x-0 top-0 z-50'>

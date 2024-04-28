@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+'use client';
 import { Inter } from "next/font/google";
 import "../globals.css";
 import Header from "@/components/Header/Header";
@@ -7,22 +7,26 @@ import SideNav from "@/components/Navigation/SideNav";
 import MarginWidthWrapper from "@/components/Wrappers/MarginWidthWrapper";
 import PageWrapper from "@/components/Wrappers/PageWrapper";
 import FooterNav from "@/components/Navigation/FooterNav";
+// import { redirect } from "next/navigation";
+// import { useQuery, useQueryClient } from "@tanstack/react-query";
+import isAuth from "@/components/isAuth/isAuth";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-	title: "WHMS Dashboard",
-	description: "Dashboard for the whms site.",
-};
-
-export default function RootLayout({
+function DashboardLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
+  // const queryClient = useQueryClient();
+  // const { data: userData } = useQuery<any>({queryKey: ['authUser']}, queryClient);
+
+  // if (!userData?.token) {
+  //   redirect("/signIn");
+  // }
+  
 	return (
-    <html lang="en">
-      <body className={`bg-white${inter.className}`}>
         <div className="flex">
           <SideNav />
           <main className="flex-1">
@@ -34,7 +38,6 @@ export default function RootLayout({
             </MarginWidthWrapper>
           </main>
         </div>
-      </body>
-    </html>
 	);
 }
+export default isAuth(DashboardLayout);
