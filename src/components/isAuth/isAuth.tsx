@@ -10,6 +10,7 @@ export default function isAuth(Component: any) {
 			{ queryKey: ["authUser"] },
 			queryClient
 		);
+
     const isAuthenticated = userData?.token || window.localStorage.getItem('whms_tkn');
 
 		useEffect(() => {

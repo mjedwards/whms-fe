@@ -1,6 +1,7 @@
 const Dashboard = () => {
 	return (
 		<>
+		{/* fetch events by user email in axios `/api/events/${userEmail}` */}
 			<span className='font-bold text-4xl'>Dashboard</span>
 
 			<div className='border-dashed border border-zinc-500 w-full h-12 rounded-lg'>
