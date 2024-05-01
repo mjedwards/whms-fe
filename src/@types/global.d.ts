@@ -11,3 +11,10 @@ export type FooterNavItem = {
   path: string;
   icon?: JSX.Element;
 };
+
+export interface Area {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}

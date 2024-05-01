@@ -3,10 +3,19 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useState } from "react";
 
+interface EventForm {
+	image: string;
+	title: string;
+	date: string;
+	time: string;
+	location: string;
+	description: string;
+}
+
 const EventForm = () => {
 	const [error, setError] = useState(false);
 	const [uploadSuccess, setUploadSuccess] = useState(false);
-	const [event, setEvent] = useState({
+	const [event, setEvent] = useState<EventForm>({
 		image: "",
 		title: "",
 		date: "",
@@ -187,15 +196,19 @@ const EventForm = () => {
 					className='text-sm font-semibold leading-6 text-gray-900'>
 					Cancel
 				</button>
-				{uploadSuccess ? <button
-                    disabled
-					className='flex justify-center items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-green shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>
-					<Icon icon="ep:success-filled"  style={{color: "#18f014"}} />
-				</button> : <button
-					type='submit'
-					className='rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>
-					Upload
-				</button>}
+				{uploadSuccess ? (
+					<button
+						disabled
+						className='flex justify-center items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-green shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>
+						<Icon icon='ep:success-filled' style={{ color: "#18f014" }} />
+					</button>
+				) : (
+					<button
+						type='submit'
+						className='rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'>
+						Upload
+					</button>
+				)}
 			</div>
 		</form>
 	);
