@@ -4,7 +4,16 @@ import React, { useState } from "react";
 import ImageCropper from "./image-cropper/ImageCropper";
 import NextImage from "next/image";
 import axios from "axios";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast, { Toaster } from "react-hot-toast";
+
+
+type PostInfo = {
+    formData: FormData;
+    headers: {
+        Authorization: string;
+    };
+}
 
 const ImageUploadForm = () => {
 	const queryClient = useQueryClient();
@@ -26,11 +35,9 @@ const ImageUploadForm = () => {
 	// handle the file upload
 	const fileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedFile = e.target.files?.[0];
-        if (selectedFile) {
-            setFileName(selectedFile.name);
-        }
 
 		if (selectedFile) {
+            setFileName(selectedFile.name);
 			const reader = new FileReader();
 
 			reader.onload = () => {
@@ -51,8 +58,28 @@ const ImageUploadForm = () => {
 			setFile(null);
 			setIsReady(false);
 			setImageDimensions(null);
+            setIsReady(false);
 		}
 	};
+
+	const { isPending, mutate: uploadImage } = useMutation({
+		mutationFn: async (postInfo: PostInfo) => {
+            const {formData, headers} = postInfo;
+			return axios.post(
+				"http://localhost:8080/api/image/uploadImage",
+				formData,
+				{ headers: headers }
+			);
+		},
+		onSuccess: (data) => {
+			toast.success("Image uploaded successfully");
+            setFile(null);
+            setCroppedImage("");
+			setIsReady(false);
+			setImageDimensions(null);
+            setIsReady(false);
+		},
+	});
 
 	const onFileSubmit = (e: any) => {
 		e.preventDefault();
@@ -65,8 +92,7 @@ const ImageUploadForm = () => {
 				};
 
 				const formData = new FormData();
-                console.log(croppedImage)
-				// const mimeType = croppedImage.split(';')[0].split(':')[1];
+
 				const mimeType =
 					croppedImage.match(
 						/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/
@@ -74,6 +100,7 @@ const ImageUploadForm = () => {
 
 				// Create a Blob from the base64 string
 				const binaryString = atob(croppedImage.split(",")[1]);
+
 				const bytes = new Uint8Array(binaryString.length);
 				for (let i = 0; i < binaryString.length; i++) {
 					bytes[i] = binaryString.charCodeAt(i);
@@ -82,29 +109,19 @@ const ImageUploadForm = () => {
 
 				// Get the filename from the original file
 				const fileExtension = mimeType.split("/")[1];
-				
+
 				// Append the Blob to the FormData
 				formData.append("file", blob, fileName);
-
-                //post call
-				axios
-					.post("http://localhost:5500/api/image/uploadImage", formData, {
-						headers: headers,
-					})
-					.then((response) => {
-						// Handle successful response
-						console.log(response.data);
-					})
-					.catch((error) => {
-						// Handle error from the server
-						console.error(error);
-					});
+                
+                const postInfo: PostInfo = { formData, headers }
+				uploadImage(postInfo);
 			} catch (error) {
 				// Handle any other errors
 				console.error(error);
 			}
 		}
 	};
+
 	return (
 		<>
 			<div className='relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-no-repeat bg-cover relative items-center'>
@@ -121,15 +138,6 @@ const ImageUploadForm = () => {
 								{!croppedImage && (
 									<Icon icon='logos:imagemin' width={100} height={100} />
 								)}
-								{/* {croppedImage && (
-									<NextImage
-										src={croppedImage}
-										alt='Cropped'
-										style={{ maxWidth: "100%" }}
-										width={imageDimensions?.width}
-										height={imageDimensions?.height}
-									/>
-								)} */}
 								{isReady && imageDimensions && (
 									<ImageCropper
 										image={file}
@@ -148,6 +156,7 @@ const ImageUploadForm = () => {
 											type='file'
 											className='sr-only'
 											required
+                                            accept=".png, .jpg, .jpeg, .gif"
 											onChange={fileUpload}
 										/>
 									</label>
@@ -176,6 +185,7 @@ const ImageUploadForm = () => {
 					</form>
 				</div>
 			</div>
+            <Toaster position='top-center' reverseOrder={false} />
 		</>
 	);
 };
