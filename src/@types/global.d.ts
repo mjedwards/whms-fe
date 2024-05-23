@@ -19,8 +19,13 @@ export interface Area {
   height: number;
 }
 
+type CloudStorageRefs = {
+  logo: string;
+  photo: string;
+}
 export interface GrantType {
   "Grant Name": string;
   Description: string;
   Links: string;
+  cloudStorageRefs: CloudStorageRefs;
 }
