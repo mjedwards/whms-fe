@@ -29,3 +29,10 @@ export interface GrantType {
   Links: string;
   cloudStorageRefs: CloudStorageRefs;
 }
+
+export type PostInfo = {
+	formData: FormData;
+	headers: {
+		Authorization: string;
+	};
+};
