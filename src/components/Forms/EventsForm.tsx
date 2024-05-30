@@ -5,6 +5,8 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { PostInfo } from "@/@types/global";
+
 interface EventForm {
 	image: string | Blob;
 	title: string;
@@ -13,12 +15,7 @@ interface EventForm {
 	location: string;
 	description: string;
 }
-type PostInfo = {
-	formData: EventForm;
-	headers: {
-		Authorization: string;
-	};
-};
+
 const EventForm = () => {
 	const queryClient = useQueryClient();
 	const { data: userData } = useQuery<any>(
@@ -94,7 +91,10 @@ const EventForm = () => {
 		mutationFn: async (postInfo: PostInfo) => {
 			const { formData, headers } = postInfo;
 			return axios.post("http://localhost:8080/api/event/addEvent", formData, {
-				headers: headers,
+				headers: {
+					"Content-Type": "multipart/form-data",
+					...headers,
+				},
 			});
 		},
 		onSuccess: (data) => {
@@ -113,36 +113,38 @@ const EventForm = () => {
 				const headers = {
 					Authorization: `Bearer ${token}`,
 				};
-				const { image } = event;
+
+				const formData = new FormData();
+
+				const { image, title, date, time, location, description } = event;
+
+				formData.append("title", title);
+				formData.append("date", date);
+				formData.append("time", time);
+				formData.append("location", location);
+				formData.append("description", description);
+
 				let mimeType;
 				let binaryString;
 				let bytes;
 				if (typeof image === "string") {
-					mimeType = image.match(
-						/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/
-					)?.[1] || "";
+					mimeType =
+						image.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/)?.[1] || "";
 
 					binaryString = atob(image.split(",")[1]);
-
 					bytes = new Uint8Array(binaryString.length);
 
 					for (let i = 0; i < binaryString.length; i++) {
 						bytes[i] = binaryString.charCodeAt(i);
 					}
 				}
-				
+
 				if (bytes) {
-					let blob = new Blob([bytes], { type: mimeType });
-					blob = Object.assign(blob, {
-						name: fileName
-					});
-					setEvent((prevState) => ({
-						...prevState,
-						["image"]: blob,
-					}));
+					const blob = new Blob([bytes], { type: mimeType });
+					formData.append("image", blob, fileName);
 				}
 
-				const postInfo: PostInfo = { formData: event, headers };
+				const postInfo: PostInfo = { formData: formData , headers };
 				uploadEvent(postInfo);
 			} catch (err) {
 				console.error(err);
@@ -338,7 +340,7 @@ const EventForm = () => {
 					) : (
 						<button
 							type='submit'
-							className="my-5 flex justify-center bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300">
+							className='my-5 flex justify-center bg-blue-500 text-gray-100 p-4 rounded-full tracking-wide font-semibold focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300'>
 							Upload
 						</button>
 					)}
