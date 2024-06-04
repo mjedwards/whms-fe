@@ -12,8 +12,11 @@ export default function isAuth(Component: any) {
 			queryClient
 		);
 
-		const isAuthenticated =
-			userData?.token || window?.localStorage.getItem("whms_tkn");
+		let isAuthenticated: any;
+
+		if (typeof window !== 'undefined') {
+			isAuthenticated = userData?.token || window?.localStorage.getItem("whms_tkn")
+		} 
 
 		useEffect(() => {
 			if (!isAuthenticated) {

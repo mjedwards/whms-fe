@@ -24,7 +24,7 @@ const GrantFeed = () => {
     const {isPending, mutate: getGrants} = useMutation({
 		mutationFn: async (headers: Headers) => {
 			return axios.get(
-				"http://localhost:8080/api/grants/getAllGrants",
+				"https://warmheartservice-mbmmiyp34q-uc.a.run.app/api/grants/getAllGrants",
 				{ headers: headers }
 			);
 		},
@@ -35,7 +35,10 @@ const GrantFeed = () => {
 	});
 
     useEffect(()=> {
-        const token = userData?.token || window?.localStorage.getItem("whms_tkn");
+        let token: any;
+        if (typeof window !== 'undefined') {
+            token = userData?.token || window?.localStorage.getItem("whms_tkn");
+        }
 
         const headers: Headers = {
             Authorization: `Bearer ${token}`,

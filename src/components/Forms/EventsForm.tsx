@@ -107,7 +107,10 @@ const EventForm = () => {
 
 	const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
 		e.preventDefault();
-		const token = userData?.token || window?.localStorage.getItem("whms_tkn");
+		let token: any;
+        if (typeof window !== 'undefined') {
+            token = userData?.token || window?.localStorage.getItem("whms_tkn");
+        }
 		if (token) {
 			try {
 				const headers = {
