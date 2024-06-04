@@ -6,8 +6,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Toaster, toast } from "react-hot-toast";
 import { Logo } from "../Logo/Logo";
-import loginGIF from "../../assets/whmsBG.gif";
+import loginBG from "../../assets/signin_bg.png";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import Link from "next/link";
 
 
 type User = {
@@ -63,7 +64,9 @@ const LoginForm = () => {
 				<div className='flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24'>
 					<div className='mx-auto w-full max-w-sm lg:w-96'>
 						<div>
-							<Logo />
+						<Link href="/">
+						<Logo w={50} h={50}/>
+						</Link>
 							<h2 className='mt-8 text-2xl font-bold leading-9 tracking-tight text-white'>
 								{isPending ? (
 									<>
@@ -139,7 +142,7 @@ const LoginForm = () => {
 				<div className='relative hidden w-0 h-screen flex-1 lg:block'>
 					<Image
 						className='absolute inset-0 h-full w-full object-cover'
-						src={loginGIF}
+						src={loginBG}
 						alt=''
 						fill
 					/>

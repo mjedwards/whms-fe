@@ -7,8 +7,6 @@ import SideNav from "@/components/Navigation/SideNav";
 import MarginWidthWrapper from "@/components/Wrappers/MarginWidthWrapper";
 import PageWrapper from "@/components/Wrappers/PageWrapper";
 import FooterNav from "@/components/Navigation/FooterNav";
-// import { redirect } from "next/navigation";
-// import { useQuery, useQueryClient } from "@tanstack/react-query";
 import isAuth from "@/components/isAuth/isAuth";
 
 
@@ -19,12 +17,6 @@ function DashboardLayout({
 }: {
 	children: React.ReactNode;
 }) {
-  // const queryClient = useQueryClient();
-  // const { data: userData } = useQuery<any>({queryKey: ['authUser']}, queryClient);
-
-  // if (!userData?.token) {
-  //   redirect("/signIn");
-  // }
   
 	return (
         <div className="flex">

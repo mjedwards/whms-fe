@@ -2,11 +2,6 @@ import { Icon } from "@iconify/react";
 import { SideNavItem } from "./@types/global";
 
 export const SIDENAV_ITEMS: SideNavItem[] = [
-	// {
-	//   title: 'Home',
-	//   path: '/',
-	//   icon: <Icon icon="lucide:home" width="24" height="24" />,
-	// },
 	{
 		title: "Dashboard",
 		path: "/dashboard",
@@ -28,6 +23,11 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
 		title: "Events",
 		path: "/dashboard/events",
 		icon: <Icon icon='mdi:events-check' width='24' height='24' />,
+	},
+	{
+		title: "Logout",
+		path: "/logout",
+		icon: <Icon icon="material-symbols:logout"  style={{color: "#000"}} width='24' height='24'/>,
 	},
 ];
 
