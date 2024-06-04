@@ -65,7 +65,7 @@ const ImageUploadForm = () => {
 		mutationFn: async (postInfo: PostInfo) => {
             const {formData, headers} = postInfo;
 			return axios.post(
-				"http://localhost:8080/api/image/uploadImage",
+				"https://warmheartservice-mbmmiyp34q-uc.a.run.app/api/image/uploadImage",
 				formData,
 				{ headers: headers }
 			);
